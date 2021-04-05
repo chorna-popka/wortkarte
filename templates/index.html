@@ -13,9 +13,17 @@
   <script src="{{url_for('.static',filename='js/common.js')}}"></script>
 </head>
 <body>
-<ons-page id="home">
+<ons-navigator animation="none" id="mainpage" page="home_page"></ons-navigator>
+<template id="home_page">
+  <ons-page id="home">
   <ons-toolbar style="background-color: #e0e0e0;">
-
+    <div class="left">
+      <ons-toolbar-button onclick="switchTab('settings')">
+        <span class="toolbar-button">
+          <i class="ion-ios-settings" style="font-size:32px; vertical-align:-6px; color: #4c4c4c"></i>
+        </span>
+      </ons-toolbar-button>
+    </div>
     <div class="center">
       Выбери, какие слова учить
     </div>
@@ -62,8 +70,41 @@
 
 
 </ons-page>
+</template>
+<template id="settings">
+  <ons-page id="settings-page">
+    <ons-toolbar style="background-color: #e0e0e0;">
+      <div class="center">Настройки</div>
+    </ons-toolbar>
+    <div class="background"></div>
+    <ons-list>
+
+      <ons-list-item>
+        <div class="center">
+          Перемешать слова
+        </div>
+        <div class="right">
+          <ons-switch {% if settings[0] == 1 %}checked {% endif %} id="randomize"></ons-switch>
+        </div>
+      </ons-list-item>
+      <ons-list-item>
+        <div class="center">
+          Слов в раунде
+        </div>
+        <div class="right">
+          <ons-input id="round_size" type="number" value="{{settings[1]}}" min="1" max="50"></ons-input>
+        </div>
+      </ons-list-item>
+
+    </ons-list>
+    <ons-alert-dialog-button onclick="saveSettings()">Сохранить</ons-alert-dialog-button>
+    <ons-alert-dialog-button onclick="switchTab('home_page')">Отмена</ons-alert-dialog-button>
+
+    </div>
+  </ons-page>
+</template>
 <ons-alert-dialog id="enter_new_word" cancelable>
-  <div class="alert-dialog-title">Füge ein neues Wort zu</div>
+  <div class="alert-dialog-title">Добавить слово</div>
   <div class="alert-dialog-content">
     <ons-row>
       <ons-col width="200px">
@@ -84,13 +125,8 @@
   </div>
   <div class="alert-dialog-footer">
     <ons-alert-dialog-button onclick="addNewWord()">OK</ons-alert-dialog-button>
-    <ons-alert-dialog-button onclick="hideAlertDialog()">Cancel</ons-alert-dialog-button>
+    <ons-alert-dialog-button onclick="hideAlertDialog()">Отмена</ons-alert-dialog-button>
   </div>
 </ons-alert-dialog>
-<script>
-  var navigate = function(a) {
-    window.location.replace('/bucket/'+a);
-  }
-</script>
 </body>
 </html>

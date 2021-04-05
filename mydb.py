@@ -9,7 +9,7 @@ SQLITE = 'sqlite'
 USERS = 'users'
 ADDRESSES = 'addresses'
 WORDS = 'words_stishechko'
-SETTINGS = 'settings'
+SETTINGS = 'settings_stishechko'
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class MyDatabase:
@@ -51,10 +51,8 @@ class MyDatabase:
                       Column('four', Integer)
                       )
         settings = Table(SETTINGS, metadata,
-                        Column('id', Integer, primary_key=True),
-                        Column('user_id', None, ForeignKey('users.id')),
-                        Column('direction', String, nullable=False),
-                        Column('limit', Integer)
+                        Column('randomize', Integer, nullable=False),
+                        Column('round_size', Integer, nullable=False)
                         )
 
         try:

@@ -64,3 +64,36 @@ var getGoogleTranslation = function() {
       });
     }
 }
+var navigate = function(a) {
+    window.location.replace('/bucket/'+a);
+}
+var switchTab = function(a) {
+    document.querySelector('#mainpage').pushPage(a);
+    if (a == 'home_page') {
+
+    }
+}
+var saveSettings = function() {
+    var randomize = document.querySelector('#randomize').checked;
+    var round_size = document.querySelector('#round_size').value;
+    fetch('/settings',
+        {
+            // Declare what type of data we're sending
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            // Specify the method
+            method: 'POST',
+
+            // A JSON payload
+            body: JSON.stringify({
+                "randomize": randomize,
+                "round_size": round_size
+            })
+        }).then(function (response) {
+        return response.text();
+        }).then(function (text) {
+          window.location.replace('/');
+        });
+
+}

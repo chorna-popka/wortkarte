@@ -9,7 +9,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'kjbcbkjsFGG(0knsdpcp887364hh*ˆˆghe'
 
 user_id = 'stishechko'
-limit = 10
 buckets = ['zero', 'one', 'two', 'three', 'four']
 
 
@@ -29,22 +28,35 @@ def upload_csv(user):
 @app.route("/")
 def home():
     db = mydb.MyDatabase(dbtype=mydb.SQLITE, dbname='wortkarte.sqlite')
+    # get buckets
     query = f"SELECT sum(zero), sum(one), sum(two), sum(three), sum(four) " \
             f"from words_{user_id} "
     dataset = db.return_rows(query)
     temp_list_set = list(dataset[0])
     # converting None to 0
     list_set = [0 if j is None else j for j in temp_list_set]
-    return render_template("index.html", dataset=list_set)
+    # get settings
+    query = f"SELECT randomize, round_size " \
+            f"from settings_{user_id} "
+    settings_list = list(db.return_rows(query)[0])
+    return render_template("index.html", dataset=list_set, settings=settings_list)
 
 
 @app.route("/bucket/<bucket>")
 def serve_bucket(bucket):
     db = mydb.MyDatabase(dbtype=mydb.SQLITE, dbname='wortkarte.sqlite')
+    # get settings
+    query = f"SELECT randomize, round_size " \
+            f"from settings_{user_id} "
+    settings_list = list(db.return_rows(query)[0])
+    groupby = ""
+    if settings_list[0] == 1:
+        groupby = "GROUP by RANDOM()"
+
     query = f"SELECT * from words_{user_id} " \
             f"WHERE {bucket} = 1 " \
-            f"GROUP by RANDOM()" \
-            f"LIMIT {limit}"
+            f"{groupby}" \
+            f"LIMIT {settings_list[1]}"
     pairs = db.return_rows(query)
     if len(pairs) == 0:
         return redirect(url_for('home'))
@@ -114,6 +126,20 @@ def mark():
         db = mydb.MyDatabase(dbtype=mydb.SQLITE, dbname='wortkarte.sqlite')
         word_id = int(request.get_json()['id'])
         query = f"UPDATE words_{user_id} SET {bucket} = 0, {next_bucket} = 1 WHERE id = {word_id}"
+        db.execute_query(query)
+
+        return 'OK'
+
+
+@app.route("/settings", methods=["POST"])
+def settings():
+    if request.method == "POST":
+        randomize = 0
+        if request.get_json()['randomize']:
+            randomize = 1
+        round_size = int(request.get_json()['round_size'])
+        db = mydb.MyDatabase(dbtype=mydb.SQLITE, dbname='wortkarte.sqlite')
+        query = f"UPDATE settings_{user_id} SET randomize = {randomize}, round_size = {round_size}"
         db.execute_query(query)
 
         return 'OK'

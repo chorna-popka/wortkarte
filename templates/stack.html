@@ -33,7 +33,7 @@
         </span>
       </ons-toolbar-button>
     </div>
-    <div class="center">Wort {{loop.index}} von {{count}}</div>
+    <div class="center">Слово {{loop.index}} из {{count}}</div>
     <div class="right">
       <ons-toolbar-button onclick="showEditDialog({{word[0]}}, '{{word[1]}}', '{{word[2]}}')" icon="fa-pen-square" style="font-size:30px; color: #fff">
       </ons-toolbar-button>
@@ -69,7 +69,7 @@
 </template>
 {% endfor %}
   <ons-alert-dialog id="enter_new_word" cancelable>
-  <div class="alert-dialog-title">Füge ein neues Wort zu</div>
+  <div class="alert-dialog-title">Добавить слово</div>
   <div class="alert-dialog-content">
     <ons-row>
       <ons-col width="200px">
@@ -90,11 +90,11 @@
   </div>
   <div class="alert-dialog-footer">
     <ons-alert-dialog-button onclick="addNewWord()">OK</ons-alert-dialog-button>
-    <ons-alert-dialog-button onclick="hideAlertDialog()">Cancel</ons-alert-dialog-button>
+    <ons-alert-dialog-button onclick="hideAlertDialog()">Отмена</ons-alert-dialog-button>
   </div>
 </ons-alert-dialog>
 <ons-alert-dialog id="edit_word" cancelable>
-  <div class="alert-dialog-title">Das Wort bearbeiten</div>
+  <div class="alert-dialog-title">Редактировать слово</div>
   <div class="alert-dialog-content">
     <ons-row>
       <ons-col width="250px">
@@ -111,7 +111,7 @@
   </div>
   <div class="alert-dialog-footer">
     <ons-alert-dialog-button onclick="editWord()">OK</ons-alert-dialog-button>
-    <ons-alert-dialog-button onclick="hideEditDialog()">Cancel</ons-alert-dialog-button>
+    <ons-alert-dialog-button onclick="hideEditDialog()">Отмена</ons-alert-dialog-button>
   </div>
 </ons-alert-dialog>
 </body>
