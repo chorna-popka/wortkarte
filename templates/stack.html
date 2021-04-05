@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lern.Учи.</title>
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+  <link rel="stylesheet" href="{{url_for('.static',filename='css/styles.css')}}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('.static',filename='img/apple-touch-icon.png')}}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('.static',filename='img/favicon-32x32.png')}}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('.static',filename='img/favicon-16x16.png')}}">
+  <link rel="manifest" href="{{url_for('.static',filename='manifest.json')}}">
+  <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+  <script src="{{url_for('.static',filename='js/stack.js')}}"></script>
+  <script src="{{url_for('.static',filename='js/common.js')}}"></script>
+</head>
+<body>
+<ons-navigator animation="none" id="wordstack" ></ons-navigator>
+<template id="no_words">
+  <ons-page id="page_no_words">
+    <div class="wort-card-dark">
+        нет слов...
+    </div>
+  </ons-page>
+</template>
+{% for word in words %}
+<template id="word_{{loop.index}}">
+  <ons-page id="page_word_{{loop.index}}">
+  <ons-toolbar modifier="cover-content transparent">
+    <div class="left">
+      <ons-toolbar-button onclick="goToMenu()">
+        <span class="toolbar-button">
+          <i class="ion-ios-menu" style="font-size:32px; vertical-align:-6px; color: #fff"></i>
+        </span>
+      </ons-toolbar-button>
+    </div>
+    <div class="center">Wort {{loop.index}} von {{count}}</div>
+    <div class="right">
+      <ons-toolbar-button onclick="showEditDialog({{word[0]}}, '{{word[1]}}', '{{word[2]}}')" icon="fa-pen-square" style="font-size:30px; color: #fff">
+      </ons-toolbar-button>
+      <ons-toolbar-button onclick="showAlertDialog()" icon="fa-plus-square" style="font-size:30px; color: #fff">
+      </ons-toolbar-button>
+    </div>
+  </ons-toolbar>
+
+  <ons-carousel fullscreen swipeable centered auto-scroll overscrollable auto-scroll-ratio=0.1 id="carousel">
+    <ons-carousel-item style="background-color: #e48900;">
+      <div class="wort-card">
+        {{word[2]}}
+      </div>
+    </ons-carousel-item>
+    <ons-carousel-item style="background-color: #e48900;">
+      <div class="wort-card">
+        {{word[1]}}
+      </div>
+    </ons-carousel-item>
+  </ons-carousel>
+    <ons-bottom-toolbar style="height: 120px">
+      <div class="bottom-bar__line-height" style="text-align:center;">
+        <button class="win button button--material" onclick="win({{loop.index}}, {{count}}, {{word[0]}}, '{{bucket}}')">
+          <ons-icon icon="fa-thumbs-up"></ons-icon>
+        </button>
+        <button class="lose button button--material" onclick="lose({{loop.index}}, {{count}})">
+          <ons-icon icon="fa-thumbs-down"></ons-icon>
+        </button>
+      </div>
+    </ons-bottom-toolbar>
+
+</ons-page>
+</template>
+{% endfor %}
+  <ons-alert-dialog id="enter_new_word" cancelable>
+  <div class="alert-dialog-title">Füge ein neues Wort zu</div>
+  <div class="alert-dialog-content">
+    <ons-row>
+      <ons-col width="200px">
+        <ons-input id="deu_wort" modifier="underbar" placeholder="deutsch" float></ons-input>
+      </ons-col>
+      <ons-col></ons-col>
+    </ons-row>
+    <ons-row>
+      <ons-col width="200px">
+        <ons-input id="rus_wort" modifier="underbar" placeholder="русский" float></ons-input>
+      </ons-col>
+      <ons-col>
+        <ons-button onclick="getGoogleTranslation()">
+          <i class="zmdi zmdi-translate" style="font-size:22px; vertical-align:-2px; color: #fff"></i>
+        </ons-button>
+      </ons-col>
+    </ons-row>
+  </div>
+  <div class="alert-dialog-footer">
+    <ons-alert-dialog-button onclick="addNewWord()">OK</ons-alert-dialog-button>
+    <ons-alert-dialog-button onclick="hideAlertDialog()">Cancel</ons-alert-dialog-button>
+  </div>
+</ons-alert-dialog>
+<ons-alert-dialog id="edit_word" cancelable>
+  <div class="alert-dialog-title">Das Wort bearbeiten</div>
+  <div class="alert-dialog-content">
+    <ons-row>
+      <ons-col width="250px">
+        <textarea id="source" class="textarea" rows="2"></textarea>
+
+      </ons-col>
+    </ons-row>
+    <ons-row>
+      <ons-col width="250px">
+        <textarea id="target" class="textarea" rows="2"></textarea>
+      </ons-col>
+    </ons-row>
+    <ons-input id="w_id" type="hidden"></ons-input>
+  </div>
+  <div class="alert-dialog-footer">
+    <ons-alert-dialog-button onclick="editWord()">OK</ons-alert-dialog-button>
+    <ons-alert-dialog-button onclick="hideEditDialog()">Cancel</ons-alert-dialog-button>
+  </div>
+</ons-alert-dialog>
+</body>
+</html>

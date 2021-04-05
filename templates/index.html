@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lern.Учи.</title>
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="https://unpkg.com/onsenui/css/onsen-css-components.min.css">
+  <link rel="stylesheet" href="{{url_for('.static',filename='css/styles.css')}}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('.static',filename='img/apple-touch-icon.png')}}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('.static',filename='img/favicon-32x32.png')}}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('.static',filename='img/favicon-16x16.png')}}">
+  <link rel="manifest" href="{{url_for('.static',filename='manifest.json')}}">
+  <script src="https://unpkg.com/onsenui/js/onsenui.min.js"></script>
+  <script src="{{url_for('.static',filename='js/common.js')}}"></script>
+</head>
+<body>
+<ons-page id="home">
+  <ons-toolbar style="background-color: #e0e0e0;">
+
+    <div class="center">
+      Выбери, какие слова учить
+    </div>
+
+  </ons-toolbar>
+  <div class="background"></div>
+  <div class="content"></div>
+  <div class="homegrid">
+    <ons-row>
+      <ons-col class="homegrid-col">
+        <ons-fab onclick="navigate('zero')" style="background-color: rgb(218 70 87) !important;" {%if dataset[0] == 0 %} disabled {% endif %}>
+          {{dataset[0]}}
+        </ons-fab>
+
+        <ons-fab onclick="navigate('one')" style="background-color: rgb(255 119 22) !important;" {%if dataset[1] == 0 %} disabled {% endif %}>
+          {{dataset[1]}}
+        </ons-fab>
+      </ons-col>
+    </ons-row>
+    <ons-row>
+      <ons-col class="homegrid-col">
+        <ons-fab onclick="navigate('two')" style="background-color: rgb(214 216 67) !important;" {%if dataset[2] == 0 %} disabled {% endif %}>
+          {{dataset[2]}}
+        </ons-fab>
+
+        <ons-fab onclick="navigate('three')" style="background-color: #9ede73 !important;" {%if dataset[3] == 0 %} disabled {% endif %}>
+          {{dataset[3]}}
+        </ons-fab>
+      </ons-col>
+    </ons-row>
+    <ons-row>
+      <ons-col class="homegrid-col">
+        <ons-fab onclick="navigate('four')" style="background-color: #1e6f5c !important;" {%if dataset[4] == 0 %} disabled {% endif %}>
+          {{dataset[4]}}
+        </ons-fab>
+
+        <ons-fab modifier="mini" onclick="showAlertDialog()" style="background-color: #536162 !important;">
+          <ons-icon icon="fa-plus-square"></ons-icon>
+        </ons-fab>
+      </ons-col>
+    </ons-row>
+  </div>
+
+
+
+</ons-page>
+<ons-alert-dialog id="enter_new_word" cancelable>
+  <div class="alert-dialog-title">Füge ein neues Wort zu</div>
+  <div class="alert-dialog-content">
+    <ons-row>
+      <ons-col width="200px">
+        <ons-input id="deu_wort" modifier="underbar" placeholder="deutsch" float></ons-input>
+      </ons-col>
+      <ons-col></ons-col>
+    </ons-row>
+    <ons-row>
+      <ons-col width="200px">
+        <ons-input id="rus_wort" modifier="underbar" placeholder="русский" float></ons-input>
+      </ons-col>
+      <ons-col>
+        <ons-button onclick="getGoogleTranslation()">
+          <i class="zmdi zmdi-translate" style="font-size:22px; vertical-align:-2px; color: #fff"></i>
+        </ons-button>
+      </ons-col>
+    </ons-row>
+  </div>
+  <div class="alert-dialog-footer">
+    <ons-alert-dialog-button onclick="addNewWord()">OK</ons-alert-dialog-button>
+    <ons-alert-dialog-button onclick="hideAlertDialog()">Cancel</ons-alert-dialog-button>
+  </div>
+</ons-alert-dialog>
+<script>
+  var navigate = function(a) {
+    window.location.replace('/bucket/'+a);
+  }
+</script>
+</body>
+</html>
